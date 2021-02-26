@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions
 
 from comments import models
 from comments.api import serializers
-from comments.api.permissions import  IsOwnerOrReadOnly, isOwner
+from comments.api.permissions import  IsOwnerOrReadOnly
 
 class CommentsViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CommentsSerializer
@@ -17,4 +17,4 @@ class CommentsViewSet(viewsets.ModelViewSet):
             return super(CommentsViewSet, self).get_queryset()
 
     def perform_create(self, serializer):
-        serializer.save(post_id=self.kwargs.get('post_pk'))
+        serializer.save(post_id=self.kwargs.get('post_pk'), author=self.request.user)
